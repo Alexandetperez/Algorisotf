@@ -3,18 +3,16 @@ from datetime import datetime
 
 from django.forms import model_to_dict
 
-gender_choices = (
-    ('male','Masculino'),
-    ('female','Femenino'),
-)
+from core.erp.choices import gender_choices
 
 
 class Category(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+    desc = models.CharField(max_length=500, null=True, blank=True, verbose_name='Descripción')
 
     def __str__(self):
-        return 'Nombre: {}'.format(self.name)
-    
+        return self.name
+
     def toJSON(self):
         item = model_to_dict(self)
         return item
@@ -23,6 +21,7 @@ class Category(models.Model):
         verbose_name = 'Categoria'
         verbose_name_plural = 'Categorias'
         ordering = ['id']
+
 
 class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
@@ -37,6 +36,7 @@ class Product(models.Model):
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
         ordering = ['id']
+
 
 class Client(models.Model):
     names = models.CharField(max_length=150, verbose_name='Nombres')
@@ -54,6 +54,7 @@ class Client(models.Model):
         verbose_name_plural = 'Clientes'
         ordering = ['id']
 
+
 class Sale(models.Model):
     cli = models.ForeignKey(Client, on_delete=models.CASCADE)
     date_joined = models.DateField(default=datetime.now)
@@ -68,6 +69,7 @@ class Sale(models.Model):
         verbose_name = 'Venta'
         verbose_name_plural = 'Ventas'
         ordering = ['id']
+
 
 class DetSale(models.Model):
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
